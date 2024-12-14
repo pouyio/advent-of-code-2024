@@ -1,6 +1,8 @@
 package Garden
 
-import "slices"
+import (
+	"slices"
+)
 
 type Garden struct {
 	OriginalGarden [][]string
@@ -95,4 +97,48 @@ func CalculatePerimeter(points [][2]int) int {
 	}
 
 	return perimeter
+}
+
+func (g *Garden) safeValue(x, y int) string {
+	if x < 0 || y < 0 || y > len(g.OriginalGarden)-1 || x > len(g.OriginalGarden[0])-1 {
+		return "."
+	}
+	return g.OriginalGarden[y][x]
+}
+
+func (g *Garden) corners(point [2]int) int {
+	currentWord := g.OriginalGarden[point[1]][point[0]]
+	acc := 0
+
+	// top left
+	if ((currentWord != g.safeValue(point[0], point[1]-1)) && (currentWord != g.safeValue(point[0]-1, point[1]))) || ((currentWord == g.safeValue(point[0]-1, point[1])) && (currentWord == g.safeValue(point[0], point[1]-1)) && (currentWord != g.safeValue(point[0]-1, point[1]-1))) {
+		acc++
+	}
+
+	// top right
+	if ((currentWord != g.safeValue(point[0], point[1]-1)) && (currentWord != g.safeValue(point[0]+1, point[1]))) || ((currentWord == g.safeValue(point[0]+1, point[1])) && (currentWord == g.safeValue(point[0], point[1]-1)) && (currentWord != g.safeValue(point[0]+1, point[1]-1))) {
+		acc++
+	}
+
+	// bottom left
+	if ((currentWord != g.safeValue(point[0], point[1]+1)) && (currentWord != g.safeValue(point[0]-1, point[1]))) || ((currentWord == g.safeValue(point[0]-1, point[1])) && (currentWord == g.safeValue(point[0], point[1]+1)) && (currentWord != g.safeValue(point[0]-1, point[1]+1))) {
+		acc++
+	}
+
+	// bottom right
+	if ((currentWord != g.safeValue(point[0], point[1]+1)) && (currentWord != g.safeValue(point[0]+1, point[1]))) || ((currentWord == g.safeValue(point[0]+1, point[1])) && (currentWord == g.safeValue(point[0], point[1]+1)) && (currentWord != g.safeValue(point[0]+1, point[1]+1))) {
+		acc++
+	}
+
+	return acc
+}
+
+func (g *Garden) CountCorners(points [][2]int) int {
+	corners := 0
+
+	for _, p := range points {
+		corners += g.corners(p)
+	}
+
+	return corners
 }
