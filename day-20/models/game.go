@@ -168,14 +168,14 @@ func (s *State) FindCheats() [][2]int {
 	return cheats
 }
 
-func (s *State) FindCheats1() map[[2]int]bool {
-	cheats := map[[2]int]bool{}
+func (s *State) FindCheats1() map[[4]int]bool {
+	cheats := map[[4]int]bool{}
 	for idx, path := range s.paths {
 		shortcuts := s.findShortcuts1(path)
 		if len(shortcuts) != 0 {
 			for shortcut, cheatTime := range shortcuts {
-				if s.PathTimeMap[shortcut]-idx-cheatTime == 72 {
-					cheats[shortcut] = true
+				if s.PathTimeMap[shortcut]-idx-cheatTime >= 100 {
+					cheats[[4]int{path[0], path[1], shortcut[0], shortcut[1]}] = true
 				}
 			}
 		}

@@ -32,7 +32,7 @@ func part1() {
 
 func part2() {
 	// Open the file for reading
-	file, err := os.Open("./test.txt")
+	file, err := os.Open("./input.txt")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -54,5 +54,5 @@ func part2() {
 
 func main() {
 	part1()
-	// part2()
+	part2()
 }
